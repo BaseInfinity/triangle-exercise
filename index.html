@@ -199,8 +199,8 @@
         function hasAllPermutations(testCases, checkFunction) {
             const permutations = testCases.filter(checkFunction);
             if (permutations.length < 3) return false;
-            
-            const uniquePermutations = new Set(permutations.map(p => p.split(',').sort().join(',')));
+    
+            const uniquePermutations = new Set(permutations);
             return uniquePermutations.size >= 3;
         }
     </script>
