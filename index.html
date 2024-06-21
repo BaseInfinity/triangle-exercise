@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triangle Test Case Exercise</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #testCases {
+            width: 100%;
+            height: 200px;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        .interpretation {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+        #customDialog {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .dialog-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            text-align: center;
+        }
+        .dialog-buttons button {
+            margin: 0 10px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Triangle Test Case Exercise</h1>
+    <p>Create a set of test data for the program—data the program must handle correctly to be considered a successful program.</p>
+    <p>Here’s a description of the program:</p>
+    <p><b>The program reads three integer values from an input dialog. The three values represent the lengths of the sides of a triangle. The program displays a message that states whether the triangle is scalene, isosceles, or equilateral.</b></p>
+    <p>Remember that a scalene triangle is one where no two sides are equal, whereas an isosceles triangle has two equal sides, and an equilateral triangle has three sides of equal length. </p>
+    <p>Moreover, the angles opposite the 2 equal sides in an isosceles triangle also are equal (it also follows that the sides opposite equal angles in a triangle are equal), and all angles in an equilateral triangle are equal. </p>
+    <p><b>Enter your test cases, one per line, in the format: side1,side2,side3</b></p>
+    <textarea id="testCases" placeholder="Enter your test cases here, one per line"></textarea>
+    <button onclick="evaluateTestCases()">Evaluate Test Cases</button>
+    <div id="result"></div>
+    <div id="customDialog">
+        <div class="dialog-content">
+            <p>For each test case, did you specify the expected results?</p>
+            <div class="dialog-buttons">
+                <button onclick="closeDialog(true)">Yes</button>
+                <button onclick="closeDialog(false)">No</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let dialogResult = false;
+
+        function showDialog() {
+            return new Promise((resolve) => {
+                document.getElementById('customDialog').style.display = 'block';
+                window.closeDialog = function(result) {
+                    document.getElementById('customDialog').style.display = 'none';
+                    resolve(result);
+                };
+            });
+        }
+
+        async function evaluateTestCases() {
+            const testCasesInput = document.getElementById('testCases').value;
+            const testCases = testCasesInput.split('\n').map(line => line.trim()).filter(line => line);
+            
+            let score = 0;
+            const results = [];
+
+            // Evaluation criteria
+            const hasScalene = testCases.some(isValidScalene);
+            const hasEquilateral = testCases.some(isValidEquilateral);
+            const hasIsosceles = testCases.some(isValidIsosceles);
+            const hasAllIsoscelesPermutations = hasAllPermutations(testCases, isValidIsosceles);
+            const hasZeroSide = testCases.some(hasZeroValue);
+            const hasNegativeSide = testCases.some(hasNegativeValue);
+            const hasSumEqualToThird = testCases.some(isSumEqualToThird);
+            const hasAllSumEqualPermutations = hasAllPermutations(testCases, isSumEqualToThird);
+            const hasSumLessThanThird = testCases.some(isSumLessThanThird);
+            const hasAllSumLessPermutations = hasAllPermutations(testCases, isSumLessThanThird);
+            const hasAllZeros = testCases.some(isAllZeros);
+            const hasNonInteger = testCases.some(hasNonIntegerValue);
+            const hasWrongNumberOfValues = testCases.some(hasIncorrectValueCount);
+
+            results.push(`1. Valid scalene triangle: ${hasScalene ? 'Yes' : 'No'}`);
+            results.push(`2. Valid equilateral triangle: ${hasEquilateral ? 'Yes' : 'No'}`);
+            results.push(`3. Valid isosceles triangle: ${hasIsosceles ? 'Yes' : 'No'}`);
+            results.push(`4. All isosceles permutations: ${hasAllIsoscelesPermutations ? 'Yes' : 'No'}`);
+            results.push(`5. Test case with zero value: ${hasZeroSide ? 'Yes' : 'No'}`);
+            results.push(`6. Test case with negative value: ${hasNegativeSide ? 'Yes' : 'No'}`);
+            results.push(`7. Sum of two sides equal to third: ${hasSumEqualToThird ? 'Yes' : 'No'}`);
+            results.push(`8. All permutations of sum equal to third: ${hasAllSumEqualPermutations ? 'Yes' : 'No'}`);
+            results.push(`9. Sum of two sides less than third: ${hasSumLessThanThird ? 'Yes' : 'No'}`);
+            results.push(`10. All permutations of sum less than third: ${hasAllSumLessPermutations ? 'Yes' : 'No'}`);
+            results.push(`11. All sides zero: ${hasAllZeros ? 'Yes' : 'No'}`);
+            results.push(`12. Non-integer values: ${hasNonInteger ? 'Yes' : 'No'}`);
+            results.push(`13. Wrong number of values: ${hasWrongNumberOfValues ? 'Yes' : 'No'}`);
+
+            score = results.filter(result => result.endsWith('Yes')).length;
+
+            // Ask the final question using the custom dialog
+            const expectedResultsSpecified = await showDialog();
+            if (expectedResultsSpecified) {
+                score++;
+                results.push("14. Expected results specified: Yes");
+            } else {
+                results.push("14. Expected results specified: No");
+            }
+
+            const interpretationText = `
+                <div class="interpretation">
+                    <h3>Interpretation</h3>
+                    <p>Now, before you become concerned about your score, consider this: In our experience, highly qualified professional programmers score, on the average, only 7.8 out of a possible 14. If you've done better, congratulations!</p>
+                    <p>The point of the exercise is to illustrate that the testing of even a trivial program such as this is not an easy task. Given this is true, consider the difficulty of testing a 100,000-statement air traffic control system, a compiler, or even a mundane payroll program. Testing also becomes more difficult with the object-oriented languages, such as Java and C++. For example, your test cases for applications built with these languages must expose errors associated with object instantiation and memory management.</p>
+                    <p> Want to learn more about Software Automation? <p>
+                        <a href="https://discord.com/invite/9m4HkejXgs">Check out the Software Automation Discord Server!</a>
+                </div>
+            `;
+
+            document.getElementById('result').innerHTML = `
+                <h2>Evaluation Results</h2>
+                <p>Score: ${score} out of 14</p>
+                <ul>${results.map(result => `<li>${result}</li>`).join('')}</ul>
+                ${interpretationText}
+            `;
+        }
+
+        // Helper functions (unchanged)
+        function isValidTriangle(a, b, c) {
+            return a + b > c && b + c > a && c + a > b;
+        }
+
+        function isValidScalene(testCase) {
+            const [a, b, c] = testCase.split(',').map(Number);
+            return isValidTriangle(a, b, c) && a !== b && b !== c && a !== c;
+        }
+
+        function isValidEquilateral(testCase) {
+            const [a, b, c] = testCase.split(',').map(Number);
+            return isValidTriangle(a, b, c) && a === b && b === c;
+        }
+
+        function isValidIsosceles(testCase) {
+            const [a, b, c] = testCase.split(',').map(Number);
+            return isValidTriangle(a, b, c) && (a === b || b === c || a === c) && !(a === b && b === c);
+        }
+
+        function hasZeroValue(testCase) {
+            return testCase.split(',').some(side => Number(side) === 0);
+        }
+
+        function hasNegativeValue(testCase) {
+            return testCase.split(',').some(side => Number(side) < 0);
+        }
+
+        function isSumEqualToThird(testCase) {
+            const [a, b, c] = testCase.split(',').map(Number);
+            return a + b === c || b + c === a || c + a === b;
+        }
+
+        function isSumLessThanThird(testCase) {
+            const [a, b, c] = testCase.split(',').map(Number);
+            return a + b < c || b + c < a || c + a < b;
+        }
+
+        function isAllZeros(testCase) {
+            return testCase.split(',').every(side => Number(side) === 0);
+        }
+
+        function hasNonIntegerValue(testCase) {
+            return testCase.split(',').some(side => !Number.isInteger(Number(side)));
+        }
+
+        function hasIncorrectValueCount(testCase) {
+            return testCase.split(',').length !== 3;
+        }
+
+        function hasAllPermutations(testCases, checkFunction) {
+            const permutations = testCases.filter(checkFunction);
+            if (permutations.length < 3) return false;
+            
+            const uniquePermutations = new Set(permutations.map(p => p.split(',').sort().join(',')));
+            return uniquePermutations.size >= 3;
+        }
+    </script>
+
+
+</body>
+</html>
