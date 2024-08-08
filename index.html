@@ -72,7 +72,7 @@
     <div id="result"></div>
     <div id="customDialog">
         <div class="dialog-content">
-            <p>For each test case, did you specify the expected results?</p>
+            <p>Bonus Question: For each test case, did you specify the expected results?</p>
             <div class="dialog-buttons">
                 <button onclick="closeDialog(true)">Yes</button>
                 <button onclick="closeDialog(false)">No</button>
@@ -178,34 +178,35 @@
                 }
             });
 
-            // Ask the final question using the custom dialog
+            // Ask the bonus question using the custom dialog
             const expectedResultsSpecified = await showDialog();
             if (expectedResultsSpecified) {
                 score++;
-                results.push("14. Expected results specified: Yes");
+                results.push("Bonus: Expected results specified: Yes");
             } else {
-                results.push('14. Expected results specified: No<br><span class="explanation">Explanation: For each test case, specify the expected output (scalene, isosceles, equilateral, or invalid).</span>');
+                results.push('Bonus: Expected results specified: No<br><span class="explanation">Explanation: For each test case, specify the expected output (scalene, isosceles, equilateral, or invalid).</span>');
             }
 
             const interpretationText = `
                 <div class="interpretation">
                     <h3>Interpretation</h3>
-                    <p>Now, before you become concerned about your score, consider this: In our experience, highly qualified professional programmers score, on the average, only 7.8 out of a possible 14. If you've done better, congratulations!</p>
-                    <p>The point of the exercise is to illustrate that the testing of even a trivial program such as this is not an easy task. Given this is true, consider the difficulty of testing a 100,000-statement air traffic control system, a compiler, or even a mundane payroll program. Testing also becomes more difficult with the object-oriented languages, such as Java and C++. For example, your test cases for applications built with these languages must expose errors associated with object instantiation and memory management.</p>
+                    <p>Now, before you become concerned about your score, consider this: In our experience, highly qualified professional programmers score, on the average, only 7.8 out of a possible 13 (excluding the bonus). If you've done better, congratulations!</p>
+                    <p>The point of the exercise is to illustrate that the testing of even a trivial program such as this is not an easy task.</p>
+                    <p>Given this is true, consider the difficulty of testing a 100,000-statement air traffic control system, a compiler, or even a mundane payroll program.</p>
+                    <p>Testing also becomes more difficult with the object-oriented languages, such as Java and C++. For example, your test cases for applications built with these languages must expose errors associated with object instantiation and memory management.</p>
                     <p>Want to learn more about Software Automation?</p>
-                    <div class="community-links">
-                        <a href="https://discord.com/invite/9m4HkejXgs" target="_blank">Join the Software Automation Discord Server! Over 350+ Members!</a>
-                        <iframe src="https://ghbtns.com/github-btn.html?user=baseinfinity&repo=triangle-exercise&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="GitHub"></iframe>
-                    </div>
+                    <a href="https://discord.com/invite/9m4HkejXgs" target="_blank">Join the Software Automation Discord Server! Over 350+ Members!</a>
+                    <iframe src="https://ghbtns.com/github-btn.html?user=baseinfinity&repo=triangle-exercise&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="GitHub"></iframe>
                 </div>
             `;
 
             document.getElementById('result').innerHTML = `
                 <h2>Evaluation Results</h2>
-                <p>Score: ${score} out of 14</p>
+                <p>Score: ${score} out of 13 ${score > 13 ? '(including bonus)' : ''}</p>
                 <ul>${results.map(result => `<li>${result}</li>`).join('')}</ul>
                 ${interpretationText}
             `;
+
         }
 
         // Helper functions
