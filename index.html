@@ -49,6 +49,11 @@
     </style>
 </head>
 <body>
+    <div class="top-links">
+        <a href="https://discord.com/invite/9m4HkejXgs" target="_blank">Join the Software Automation Discord Server!</a>
+        <iframe src="https://ghbtns.com/github-btn.html?user=baseinfinity&repo=triangle-exercise&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="GitHub"></iframe>
+    </div>
+
     <h1>Triangle Test Case Exercise</h1>
     <p>Create a set of test data for the program—data the program must handle correctly to be considered a successful program.</p>
     <p>Here’s a description of the program:</p>
@@ -56,6 +61,7 @@
     <p>Remember that a scalene triangle is one where no two sides are equal, whereas an isosceles triangle has two equal sides, and an equilateral triangle has three sides of equal length. </p>
     <p>Moreover, the angles opposite the 2 equal sides in an isosceles triangle also are equal (it also follows that the sides opposite equal angles in a triangle are equal), and all angles in an equilateral triangle are equal. </p>
     <p><b>Enter your test cases, one per line, in the format: side1,side2,side3</b></p>
+    <p>For example, a valid test case for a scalene triangle would be: 3,4,5</p>
     <textarea id="testCases" placeholder="Enter your test cases here, one per line"></textarea>
     <button onclick="evaluateTestCases()">Evaluate Test Cases</button>
     <div id="result"></div>
@@ -199,7 +205,7 @@
         function hasAllPermutations(testCases, checkFunction) {
             const permutations = testCases.filter(checkFunction);
             if (permutations.length < 3) return false;
-    
+
             const uniquePermutations = new Set(permutations);
             return uniquePermutations.size >= 3;
         }
