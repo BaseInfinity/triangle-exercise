@@ -18,6 +18,12 @@
         #result {
             margin-top: 20px;
         }
+        .community-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         .interpretation {
             margin-top: 20px;
             padding: 10px;
@@ -140,7 +146,13 @@
                     <p>Now, before you become concerned about your score, consider this: In our experience, highly qualified professional programmers score, on the average, only 7.8 out of a possible 14. If you've done better, congratulations!</p>
                     <p>The point of the exercise is to illustrate that the testing of even a trivial program such as this is not an easy task. Given this is true, consider the difficulty of testing a 100,000-statement air traffic control system, a compiler, or even a mundane payroll program. Testing also becomes more difficult with the object-oriented languages, such as Java and C++. For example, your test cases for applications built with these languages must expose errors associated with object instantiation and memory management.</p>
                     <p> Want to learn more about Software Automation? <p>
-                        <a href="https://discord.com/invite/9m4HkejXgs">Check out the Software Automation Discord Server!</a>
+                </div>
+            `;
+
+            const communityLinksHtml = `
+                <div class="community-links">
+                    <a href="https://discord.com/invite/9m4HkejXgs" target="_blank">Join the Software Automation Discord Server!</a>
+                    <iframe src="https://ghbtns.com/github-btn.html?user=baseinfinity&repo=triangle-exercise&type=star&count=true" frameborder="0" scrolling="0" width="150" height="20" title="GitHub"></iframe>
                 </div>
             `;
 
@@ -149,6 +161,7 @@
                 <p>Score: ${score} out of 14</p>
                 <ul>${results.map(result => `<li>${result}</li>`).join('')}</ul>
                 ${interpretationText}
+                ${communityLinksHtml}
             `;
         }
 
